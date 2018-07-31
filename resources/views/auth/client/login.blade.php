@@ -106,7 +106,7 @@ License: You must have a valid license purchased only from themeforest(the above
 						<!--begin::Form-->
 						<form class="m-login__form m-form">
 							<div class="form-group m-form__group">
-								<input class="form-control m-input" type="text" placeholder="Username" name="username" autocomplete="off">
+								<input class="form-control m-input" type="text" placeholder="Email" name="email" autocomplete="off">
 							</div>
 							<div class="form-group m-form__group">
 								<input class="form-control m-input m-login__form-input--last" type="password" placeholder="Password" name="password">
@@ -182,13 +182,15 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!--begin::Page Snippets -->
 	<!-- <script src="/assets/auth/snippets/custom/pages/user/login6.js" type="text/javascript"></script> -->
 	<script>
+
+
 		$("#m_login_signin_submit").click(function(t) {
 			t.preventDefault();
 			var e = $(this),
 			a = $(".m-login__form");
 			a.validate({
 				rules: {
-					username: {
+					email: {
 						required: !0
 					},
 					password: {
@@ -202,7 +204,13 @@ License: You must have a valid license purchased only from themeforest(the above
 					_token: "<?php echo csrf_token(); ?>"
 				},
 				success: function(data) {
-					console.log(data);
+					if(data.response && data.redirect_url.length > 0)
+						window.location = data.redirect_url;
+				},
+				error: function(err){
+					a.removeClass("m-loader m-loader--right m-loader--light").attr("disabled", !1);
+
+					
 				}
 			}))
 		})
